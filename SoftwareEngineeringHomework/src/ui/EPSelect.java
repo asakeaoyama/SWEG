@@ -10,15 +10,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 
-public class QMSelect implements ActionListener{
+public class EPSelect implements ActionListener{
 
 	public JFrame frame;
-	
-	JButton QMSMath;
-	JButton QMSEnglish;
-	private JButton backButt;
-	
-	
+	JButton EPSMath;
+	JButton EPSEnglish;
+	JButton backButt ;
+	private JLabel lblNewLabel;
+
 	/**
 	 * Launch the application.
 	 
@@ -26,7 +25,7 @@ public class QMSelect implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					QMSelect window = new QMSelect();
+					EMSelect window = new EMSelect();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,7 +37,7 @@ public class QMSelect implements ActionListener{
 	/**
 	 * Create the application.
 	 */
-	public QMSelect() {
+	public EPSelect() {
 		initialize();
 	}
 
@@ -56,33 +55,44 @@ public class QMSelect implements ActionListener{
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		QMSMath = new JButton("math");
-		QMSMath.setBounds(88, 546, 300, 150);
-		panel.add(QMSMath);
-		QMSMath.addActionListener(this);
+		EPSMath = new JButton("math");
+		EPSMath.setBounds(72, 523, 300, 150);
+		panel.add(EPSMath);
+		EPSMath.addActionListener(this);
 		
-		QMSEnglish = new JButton("English");
-		QMSEnglish.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		QMSEnglish.setBounds(432, 546, 300, 150);
-		panel.add(QMSEnglish);
+		EPSEnglish = new JButton("English");
+		EPSEnglish.setBounds(447, 523, 300, 150);
+		panel.add(EPSEnglish);
+		EPSEnglish.addActionListener(this);
 		
 		backButt = new JButton("back");
-		backButt.setBounds(832, 673, 87, 23);
+		backButt.setBounds(804, 650, 87, 23);
 		panel.add(backButt);
 		
-		JLabel lblNewLabel = new JLabel("Quetion Pool Manage");
+		lblNewLabel = new JLabel("Exam Paper Manage");
 		lblNewLabel.setFont(new Font("·L³n¥¿¶ÂÅé", Font.BOLD, 25));
-		lblNewLabel.setBounds(88, 220, 644, 65);
+		lblNewLabel.setBounds(72, 232, 675, 87);
 		panel.add(lblNewLabel);
 		backButt.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==EPSMath) {
+			System.out.println("in");
+			frame.dispose();
+			try {
+				MathExamPaperEditor window = new MathExamPaperEditor();
+				window.frame.setVisible(true);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+		if(e.getSource()==EPSEnglish) {
+			System.out.println("in");
+		}
 		if(e.getSource()==backButt) {
+			System.out.println("in");
 			frame.dispose();
 			/*
 			try {
@@ -93,15 +103,5 @@ public class QMSelect implements ActionListener{
 			}
 			*/
 		}
-		if(e.getSource()==QMSMath) {
-			frame.dispose();
-			try {
-				MathQueEditor window = new MathQueEditor();
-				window.frame.setVisible(true);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-		
 	}
 }

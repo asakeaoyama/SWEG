@@ -71,23 +71,23 @@ public class SearchScore implements ActionListener{
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 434, 261);
+		panel.setBounds(0, 0, 984, 761);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		backButt = new JButton("back");
-		backButt.setBounds(10, 217, 87, 23);
+		backButt.setBounds(851, 705, 87, 23);
 		panel.add(backButt);
 		backButt.addActionListener(this);
 		
 		
 		comboBox = new JComboBox<String>();
-		comboBox.setBounds(10, 70, 119, 23);
+		comboBox.setBounds(180, 705, 571, 23);
 		panel.add(comboBox);
 		comboBox.addItem("choose examination");
 		comboBox.addItem("mid exam");
@@ -96,11 +96,11 @@ public class SearchScore implements ActionListener{
 		
 		JLabel lblNewLabel = new JLabel("choose quiz");
 		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-		lblNewLabel.setBounds(10, 45, 119, 15);
+		lblNewLabel.setBounds(51, 705, 119, 23);
 		panel.add(lblNewLabel);
 		
 		scoreArea = new JTextArea();
-		scoreArea.setBounds(139, 10, 285, 241);
+		scoreArea.setBounds(51, 25, 887, 662);
 		panel.add(scoreArea);
 		
 		
@@ -112,14 +112,15 @@ public class SearchScore implements ActionListener{
 			
 			frame.dispose();
 			
-			
+			/*
 			try {
-				TeacherUI window = new TeacherUI();
+				TeacherUI window = new TeacherUI(TeacherUI.userName);
 				window.frame.setVisible(true);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			*/
 		}
 		if(e.getSource()==comboBox) {
 			String scoretxt="";

@@ -8,24 +8,25 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JButton;
 
-public class MathQueEditor implements ActionListener{
+public class MathExamPaperEditor implements ActionListener{
 
 	public JFrame frame;
 	private final JPanel panel = new JPanel();
 	
 	JButton backButt;
 	JComboBox comboBox;
-	JTextArea QArea;
+	JTextArea EArea;
 	JButton addButt;
 	JEditorPane editorPane;
 	private JButton delButt;
+
 	
 	public static Connection getConnection() throws Exception{
 		try {
@@ -39,7 +40,7 @@ public class MathQueEditor implements ActionListener{
 			System.out.println("connect Successfully");
 			return conn;
 		} catch(Exception e) {
-			System.out.println(e); 
+			System.out.println(e);
 		}
 		return null;
 	}
@@ -50,7 +51,7 @@ public class MathQueEditor implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					QueEditor window = new QueEditor();
+					MathExamEditor window = new MathExamEditor();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +63,7 @@ public class MathQueEditor implements ActionListener{
 	/**
 	 * Create the application.
 	 */
-	public MathQueEditor() {
+	public MathExamPaperEditor() {
 		initialize();
 	}
 
@@ -81,20 +82,19 @@ public class MathQueEditor implements ActionListener{
 		comboBox = new JComboBox();
 		comboBox.setBounds(31, 672, 89, 23);
 		panel.add(comboBox);
-		comboBox.addItem("choose level");
-		comboBox.addItem("Lv1");
-		comboBox.addItem("Lv2");
-		comboBox.addItem("Lv3");
+		comboBox.addItem("choose quiz");
+		comboBox.addItem("mid exam");
+		comboBox.addItem("final exam");
 		comboBox.addActionListener(this);
 		 
 		editorPane = new JEditorPane();
 		editorPane.setBounds(161, 672, 581, 21);
 		panel.add(editorPane);
 		
-		QArea = new JTextArea();
-		QArea.setBounds(31, 10, 920, 627);
-		panel.add(QArea);
-		QArea.setEditable(false);
+		EArea = new JTextArea();
+		EArea.setBounds(31, 10, 920, 627);
+		panel.add(EArea);
+		EArea.setEditable(false);
 		
 		backButt = new JButton("back");
 		backButt.setBounds(875, 672, 87, 23);
@@ -119,91 +119,77 @@ public class MathQueEditor implements ActionListener{
 			frame.dispose();
 			frame.dispose();
 			try {
-				QMSelect window = new QMSelect();
+				EPSelect window = new EPSelect();
 				window.frame.setVisible(true);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}
 		if(e.getSource()==comboBox) {
-			String Qtxt="";
-			String lvSelect = (String) comboBox.getSelectedItem();
-			if (lvSelect.equals("Lv1")) {
+			String Etxt="";
+			String ExamSelect = (String) comboBox.getSelectedItem();
+			if (ExamSelect.equals("mid exam")) {
 				try {
 					Connection conn = getConnection();
 					Statement st = conn.createStatement();
-					ResultSet rs = st.executeQuery("Select * from `mathQ` where `lv`=1");
+					ResultSet rs = st.executeQuery("Select * from `midExamPaper`");
 					while(rs.next()) {
-						Qtxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t"+rs.getString("lv")+"\n";
+						Etxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t\n";
 						
 					}
-					QArea.setText(Qtxt);
+					EArea.setText(Etxt);
 					
 				} catch (Exception e1) {
 					System.out.println(e1);
 				}
 			}
-			else if (lvSelect.equals("Lv2")) {
+			else if (ExamSelect.equals("final exam")) {
 				try {
 					Connection conn = getConnection();
 					Statement st = conn.createStatement();
-					ResultSet rs = st.executeQuery("Select * from `mathQ` where `lv`=2");
+					ResultSet rs = st.executeQuery("Select * from `finalExamPaper` ");
 					while(rs.next()) {
-						Qtxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t"+rs.getString("lv")+"\n";
+						Etxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t\n";
 						
 					}
-					QArea.setText(Qtxt);
+					EArea.setText(Etxt);
 					
 				} catch (Exception e1) {
 					System.out.println(e1);
 				}
 			}
-			else if (lvSelect.equals("Lv3")) {
-				try {
-					Connection conn = getConnection();
-					Statement st = conn.createStatement();
-					ResultSet rs = st.executeQuery("Select * from `mathQ` where `lv`=3");
-					while(rs.next()) {
-						Qtxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t"+rs.getString("lv")+"\n";
-						
-					}
-					QArea.setText(Qtxt);
-					
-				} catch (Exception e1) {
-					System.out.println(e1);
-				}
-			}
-				
 		}
 		if(e.getSource()==addButt) {
 			String QLine = editorPane.getText();
 			String[] QA = QLine.split("/"); 
-			try {
-				Connection conn = getConnection();
-				Statement st = conn.createStatement();
-				String ins = "insert into `mathQ` values('"+QA[0]+"','"+QA[1]+"',"+QA[2]+");";
-				st.executeUpdate(ins);
-				
-				
-				
-			} catch (Exception e1) {
-				System.out.println(e1);
+			String ExamSelect = (String) comboBox.getSelectedItem();
+			if (ExamSelect.equals("mid exam")) {
+				try {
+					Connection conn = getConnection();
+					Statement st = conn.createStatement();
+					String ins = "insert into `midExamPaper` values('"+QA[0]+"','"+QA[1]+"');";
+					st.executeUpdate(ins);
+					
+					
+					
+				} catch (Exception e1) {
+					System.out.println(e1);
+				}
 			}
-		}
-		if(e.getSource()==delButt) {
-			String QLine = editorPane.getText();
-			String[] QA = QLine.split("/"); 
-			try {
-				Connection conn = getConnection();
-				Statement st = conn.createStatement();
-				String ins = "delete from `mathQ` where `quetion`='"+QA[0]+"';";
-				st.executeUpdate(ins);
-				
-				
-				
-			} catch (Exception e1) {
-				System.out.println(e1);
+			if (ExamSelect.equals("final exam")) {
+				try {
+					Connection conn = getConnection();
+					Statement st = conn.createStatement();
+					String ins = "insert into `finalExamPaper` values('"+QA[0]+"','"+QA[1]+"');";
+					st.executeUpdate(ins);
+					
+					
+					
+				} catch (Exception e1) {
+					System.out.println(e1);
+				}
 			}
 		}
 	}
+
 }

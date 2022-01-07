@@ -1,0 +1,15 @@
+nknustudent 12345678 Stu false
+nknuteacher 1234567 Tea false
+nknusystem 123456 Sys false
+
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true
+nknusystem 123456 Sys true

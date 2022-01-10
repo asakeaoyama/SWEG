@@ -5,13 +5,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 
 public class EPSelect implements ActionListener{
 
-	public JFrame frame;
+	public JFrame frame; 
 	JButton EPSMath;
 	JButton EPSEnglish;
 	JButton backButt ;
@@ -46,6 +48,7 @@ public class EPSelect implements ActionListener{
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 800);
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		

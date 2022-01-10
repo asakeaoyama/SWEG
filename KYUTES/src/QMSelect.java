@@ -49,7 +49,7 @@ public class QMSelect implements ActionListener{
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.setLocationRelativeTo(null);
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 984, 761);
 		frame.getContentPane().add(panel);
@@ -72,7 +72,7 @@ public class QMSelect implements ActionListener{
 		backButt.setBounds(832, 673, 87, 23);
 		panel.add(backButt);
 		
-		JLabel lblNewLabel = new JLabel("Quetion Pool Manage");
+		JLabel lblNewLabel = new JLabel("Question Pool Manage");
 		lblNewLabel.setFont(new Font("�L�n������", Font.BOLD, 25));//ioioi
 		lblNewLabel.setBounds(88, 220, 644, 65);
 		panel.add(lblNewLabel);

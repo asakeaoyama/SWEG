@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.awt.event.*;
 public class LoginGUI extends JFrame implements ActionListener {
 	JPanel Panel;
 	JLabel AccountLabel;JTextField AccountField;
@@ -28,6 +29,17 @@ public class LoginGUI extends JFrame implements ActionListener {
 		PwField.setBounds(100,60,165,25);
 		ShowPw=new JCheckBox("Show PW");
 		ShowPw.setBounds(10,100,200,40);
+		PwField.setEchoChar('*');
+		ShowPw.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange()==ItemEvent.SELECTED) {
+					PwField.setEchoChar((char)0);
+				}
+				else {
+					PwField.setEchoChar('*');
+				}
+			}
+		});
 		//Enter Button
 		EnterButton = new JButton("Enter");
 		EnterButton.setBounds(10,140,100,25);
@@ -48,6 +60,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 		setBounds(20,50,500,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		setLocationRelativeTo(null);
 	}
 	public static void main(String[] args)  {
 		new LoginGUI();
@@ -83,7 +96,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 				}
 				else if(type.equals("Sys")) {
 					JOptionPane.showMessageDialog(this,"Welcome Sys");
-					Home3 h3= new Home3(UserAccount,UserPassword);
+					SystemManagerGUI h3= new SystemManagerGUI(UserAccount,UserPassword);
 					h3.setVisible(true);
 					stat.executeUpdate(sql2);
 				}

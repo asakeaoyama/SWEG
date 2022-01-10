@@ -72,7 +72,7 @@ public class SearchScore implements ActionListener{
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.setLocationRelativeTo(null);
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 984, 761);
 		frame.getContentPane().add(panel);

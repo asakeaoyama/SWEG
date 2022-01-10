@@ -1,3 +1,0 @@
-wang 100
-Lin 95
-Jessie 88

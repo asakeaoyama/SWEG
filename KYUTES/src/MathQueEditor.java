@@ -75,6 +75,7 @@ public class MathQueEditor implements ActionListener{
 		frame.getContentPane().setLayout(null);
 		panel.setBounds(0, 0, 984, 761);
 		frame.getContentPane().add(panel);
+		frame.setLocationRelativeTo(null);
 		panel.setLayout(null);
 		
 		comboBox = new JComboBox();

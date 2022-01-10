@@ -24,7 +24,7 @@ public class TeacherUI implements ActionListener{
 	
 	public static Connection getConnection() throws Exception{
 		try {
-			String driver = "com.mysql.jdbc.Driver";
+			String driver = "com.mysql.cj.jdbc.Driver";
 			String url = "jdbc:mysql://localhost:3306/useraccount?serverTimezone=UTC";
 			String username = "root";
 			String password = "aa910828";
@@ -75,7 +75,7 @@ public class TeacherUI implements ActionListener{
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.setLocationRelativeTo(null);
 		btn1 = new JButton("Score Inquiry");
 		btn1.setBounds(543, 518, 300, 150);
 		frame.getContentPane().add(btn1);

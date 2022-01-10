@@ -1,0 +1,2 @@
+module KYUTES_UPDATE_JAVA {
+}

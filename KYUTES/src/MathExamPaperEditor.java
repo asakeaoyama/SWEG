@@ -1,4 +1,5 @@
 
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,11 +21,12 @@ public class MathExamPaperEditor implements ActionListener{
 	private final JPanel panel = new JPanel();
 	
 	JButton backButt;
-	JComboBox comboBox;
+	JComboBox<String> comboBox;
 	JTextArea EArea;
 	JButton addButt;
 	JEditorPane editorPane;
 	private JButton delButt;
+	JButton reButt;
 
 	
 	public static Connection getConnection() throws Exception{
@@ -74,20 +76,31 @@ public class MathExamPaperEditor implements ActionListener{
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		panel.setBounds(0, 0, 984, 761);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		comboBox = new JComboBox();
-		comboBox.setBounds(31, 672, 89, 23);
+		comboBox = new JComboBox<String>();
+		comboBox.setBounds(31, 672, 168, 23);
 		panel.add(comboBox);
-		comboBox.addItem("choose quiz");
-		comboBox.addItem("mid exam");
-		comboBox.addItem("final exam");
+		comboBox.addItem("choose paper");
+		try {
+			Connection conn = getConnection();
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("Select * from `exams`");
+			while(rs.next()) {
+				comboBox.addItem(rs.getString("name"));
+				
+			}
+			
+		} catch (Exception e1) {
+			System.out.println(e1);
+		}
 		comboBox.addActionListener(this);
-		 
+		
 		editorPane = new JEditorPane();
-		editorPane.setBounds(161, 672, 581, 21);
+		editorPane.setBounds(209, 672, 533, 21);
 		panel.add(editorPane);
 		
 		EArea = new JTextArea();
@@ -110,10 +123,18 @@ public class MathExamPaperEditor implements ActionListener{
 		panel.add(delButt);
 		delButt.addActionListener(this);
 		
+		reButt = new JButton("refresh");
+		reButt.setBounds(875, 705, 87, 23);
+		panel.add(reButt);
+		reButt.addActionListener(this);
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		
+		
 		if(e.getSource()==backButt) {
 			frame.dispose();
 			frame.dispose();
@@ -127,34 +148,38 @@ public class MathExamPaperEditor implements ActionListener{
 		if(e.getSource()==comboBox) {
 			String Etxt="";
 			String ExamSelect = (String) comboBox.getSelectedItem();
-			if (ExamSelect.equals("mid exam")) {
-				try {
-					Connection conn = getConnection();
-					Statement st = conn.createStatement();
-					ResultSet rs = st.executeQuery("Select * from `midExamPaper`");
-					while(rs.next()) {
-						Etxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t\n";
-						
-					}
-					EArea.setText(Etxt);
-					
-				} catch (Exception e1) {
-					System.out.println(e1);
+			String[] examArr = new String[100];
+			
+			try {
+				Connection conn = getConnection();
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery("Select * from `exams`");
+				int counter = 0;
+				while(rs.next()) {
+					examArr[counter] = rs.getString("name");
+					counter ++;
 				}
+				
+			} catch (Exception e1) {
+				System.out.println(e1);
 			}
-			else if (ExamSelect.equals("final exam")) {
-				try {
-					Connection conn = getConnection();
-					Statement st = conn.createStatement();
-					ResultSet rs = st.executeQuery("Select * from `finalExamPaper` ");
-					while(rs.next()) {
-						Etxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t\n";
+			
+			for(int i=0;i<examArr.length;i++) {
+				if (ExamSelect.equals(examArr[i])) {
+					try {
+						Connection conn = getConnection();
+						Statement st = conn.createStatement();
+						String ins = "Select * from `"+examArr[i]+"paper`";
+						ResultSet rs = st.executeQuery(ins);
+						while(rs.next()) {
+							Etxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t\n";
+							
+						}
+						EArea.setText(Etxt);
 						
+					} catch (Exception e1) {
+						System.out.println(e1);
 					}
-					EArea.setText(Etxt);
-					
-				} catch (Exception e1) {
-					System.out.println(e1);
 				}
 			}
 		}
@@ -162,33 +187,38 @@ public class MathExamPaperEditor implements ActionListener{
 			String QLine = editorPane.getText();
 			String[] QA = QLine.split("/"); 
 			String ExamSelect = (String) comboBox.getSelectedItem();
-			if (ExamSelect.equals("mid exam")) {
-				try {
-					Connection conn = getConnection();
-					Statement st = conn.createStatement();
-					String ins = "insert into `midExamPaper` values('"+QA[0]+"','"+QA[1]+"');";
-					st.executeUpdate(ins);
-					
-					
-					
-				} catch (Exception e1) {
-					System.out.println(e1);
-				}
+			
+			try {
+				Connection conn = getConnection();
+				Statement st = conn.createStatement();
+				String ins = "insert into `"+ExamSelect+"paper` values('"+QA[0]+"','"+QA[1]+"');";
+				st.executeUpdate(ins);
+				
+				
+				
+			} catch (Exception e1) {
+				System.out.println(e1);
 			}
-			if (ExamSelect.equals("final exam")) {
-				try {
-					Connection conn = getConnection();
-					Statement st = conn.createStatement();
-					String ins = "insert into `finalExamPaper` values('"+QA[0]+"','"+QA[1]+"');";
-					st.executeUpdate(ins);
+			
+			
+		}
+		if(e.getSource()==reButt) {
+			String Etxt="";
+			String ExamSelect = (String) comboBox.getSelectedItem();
+			try {
+				Connection conn = getConnection();
+				Statement st = conn.createStatement();
+				String ins = "Select * from `"+ExamSelect+"paper`";
+				ResultSet rs = st.executeQuery(ins);
+				while(rs.next()) {
+					Etxt += rs.getString("quetion")+"\t"+rs.getString("ans")+"\t\n";
 					
-					
-					
-				} catch (Exception e1) {
-					System.out.println(e1);
 				}
+				EArea.setText(Etxt);
+				
+			} catch (Exception e1) {
+				System.out.println(e1);
 			}
 		}
 	}
-
 }

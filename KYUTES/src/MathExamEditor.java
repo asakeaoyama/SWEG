@@ -1,5 +1,4 @@
 
-
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
@@ -46,7 +46,7 @@ public class MathExamEditor implements ActionListener{
 
 	/**
 	 * Launch the application.
-	 
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -70,11 +70,12 @@ public class MathExamEditor implements ActionListener{
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		panel.setBounds(0, 0, 984, 761);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -121,6 +122,10 @@ public class MathExamEditor implements ActionListener{
 		reButt.setBounds(864, 672, 87, 23);
 		panel.add(reButt);
 		reButt.addActionListener(this);
+		
+		JLabel label = new JLabel("name/time/level");
+		label.setBounds(31, 672, 581, 21);
+		panel.add(label);
 	}
 
 	@Override
@@ -149,7 +154,17 @@ public class MathExamEditor implements ActionListener{
 				Statement st = conn.createStatement();
 				String ins = "insert into `exams` values('"+EA[0]+"',"+EA[1]+","+EA[2]+");";
 				st.executeUpdate(ins);
-				
+				String insCreateExamPaper = "create table `"+EA[0]+"paper` (`question_num` int AUTO_INCREMENT primary key,`quetion` varchar(100), `ans` varchar(100));";
+				st.executeUpdate(insCreateExamPaper);
+				ResultSet rs = st.executeQuery("SELECT * FROM `exams` where `name`=\""+EA[0]+"\"");
+				rs.next();
+				if(rs.getInt("level") == 1) {
+					QuestionSelect qs = new QuestionSelect(EA[0]+"paper",3,2,0);
+				}else if(rs.getInt("level") == 2) {
+					QuestionSelect qs = new QuestionSelect(EA[0]+"paper",1,3,1);
+				}else if(rs.getInt("level") == 3) {
+					QuestionSelect qs = new QuestionSelect(EA[0]+"paper",1,1,3);
+				}
 				
 				
 			} catch (Exception e1) {
@@ -164,7 +179,8 @@ public class MathExamEditor implements ActionListener{
 				Statement st = conn.createStatement();
 				String ins = "delete from `exams` where `name`='"+EA[0]+"';";
 				st.executeUpdate(ins);
-				
+				String insDelExamPaper = "drop table `"+EA[0]+"paper` ;";
+				st.executeUpdate(insDelExamPaper);
 				
 				
 			} catch (Exception e1) {
